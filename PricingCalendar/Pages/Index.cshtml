@@ -1,0 +1,219 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Welcome";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Dynamic Pricing</h1><br />
+    <p>Welcome to the dynamic pricing POC. This app will help you understanding the dynamic pricing calendar.</p>
+    <p>In this example, we'll assume that there is only one car, with one related pricing calendar. On this car, you can make a rental. 
+    This will automatically generate rental periods of max 24 hours each (as part of the rental). 
+    It will also create one or more pricing calendar entry windows as part of each rental period.</p><br />
+</div>
+
+<div class="container-fluid">
+
+    <div class="row">
+
+        <div class="col-md-3">
+            <h4>Pricing Calendar</h4>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>
+                            @Html.DisplayNameFor(model => model.PricingCalendarEntry[0].Date)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.PricingCalendarEntry[0].Price)
+                        </th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.PricingCalendarEntry)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Date)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Price)
+                            </td>
+                            <td>
+                                <a asp-page="/PricingCalendarEntries/Edit" asp-route-id="@item.ID">Edit</a> |
+                                <a asp-page="/PricingCalendarEntries/Delete" asp-route-id="@item.ID">Delete</a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+
+        <div class="col-md-9">
+            <div class="container-fluid"></div>
+            <div class="row">
+                <h4>Rentals</h4>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Rental[0].ID)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Rental[0].StartAt)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Rental[0].EndAt)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Rental[0].BasePrice)
+                            </th>
+                            <th>
+                                <a asp-page="/Rentals/Create"><input type="button" value="New Rental" class="btn btn-primary" /></a>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.Rental)
+                        {
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.ID)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.StartAt)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.EndAt)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.BasePrice)
+                                </td>
+                                <td>
+                                    <a asp-page="/Rentals/Delete" asp-route-id="@item.ID"><input type="button" value="Delete" class="btn btn-danger" /></a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+            <div class="row">
+                <h4>Rental Periods</h4>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>
+                                @Html.DisplayNameFor(model => model.RentalPeriod[0].ID)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.RentalPeriod[0].RentalID)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.RentalPeriod[0].StartAt)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.RentalPeriod[0].EndAt)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.RentalPeriod[0].DurationHours)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.RentalPeriod[0].PartialRentalPeriodThresholdInHours)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.RentalPeriod[0].WeightedPrice)
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.RentalPeriod)
+                        {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.ID)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.RentalID)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.StartAt)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.EndAt)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.DurationHours)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.PartialRentalPeriodThresholdInHours)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.WeightedPrice)
+                            </td>
+                        </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+            <div class="row">
+                <h4>Rental Period Pricing Calendar Windows</h4>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>
+                                @Html.DisplayNameFor(model => model.RentalPeriodPricingCalendarWindow[0].ID)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.RentalPeriodPricingCalendarWindow[0].RentalPeriodID)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.RentalPeriodPricingCalendarWindow[0].RentalPeriod.RentalID)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.RentalPeriodPricingCalendarWindow[0].StartAt)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.RentalPeriodPricingCalendarWindow[0].EndAt)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.RentalPeriodPricingCalendarWindow[0].DurationHours)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.RentalPeriodPricingCalendarWindow[0].PricingCalendarEntryPrice)
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.RentalPeriodPricingCalendarWindow)
+                        {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.ID)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.RentalPeriodID)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.RentalPeriod.RentalID)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.StartAt)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.EndAt)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.DurationHours)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.PricingCalendarEntryPrice)
+                            </td>
+                        </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
